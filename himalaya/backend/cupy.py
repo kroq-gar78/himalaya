@@ -101,6 +101,7 @@ nan_to_num = cupy.nan_to_num
 hstack = cupy.hstack
 vstack = cupy.vstack
 dstack = cupy.dstack
+broadcast_to = cupy.broadcast_to
 
 
 def diagonal_view(array, axis1=0, axis2=1):

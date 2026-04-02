@@ -106,6 +106,7 @@ eye = torch.eye
 hstack = torch.hstack
 vstack = torch.vstack
 dstack = torch.dstack
+broadcast_to = torch.broadcast_to
 
 
 def atleast_1d(array):
