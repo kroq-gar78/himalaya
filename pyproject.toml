@@ -18,7 +18,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-all_backends = ["cupy", "torch"]
+#all_backends = ["cupy-cuda11x", "torch"]
+all_backends = ["torch"]
 viz = ["matplotlib"]
 test = ["pytest", "himalaya[viz]", "himalaya[all_backends]"]
 github = ["pytest", "himalaya[viz]", "torch", "pytest-rerunfailures"]
@@ -33,6 +34,16 @@ doc = [
   "torch", # only pytorch, because cupy doesn't run on github
   "himalaya[viz]"
 ]
+
+#[tool.uv.sources]
+#torch = [
+#  { index = "pytorch-cu118", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+#]
+#
+#[[tool.uv.index]]
+#name = "pytorch-cu118"
+#url = "https://download.pytorch.org/whl/cu118"
+#explicit = true
 
 [project.urls]
 Homepage = "https://gallantlab.org/himalaya/"
