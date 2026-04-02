@@ -107,6 +107,7 @@ hstack = torch.hstack
 vstack = torch.vstack
 dstack = torch.dstack
 broadcast_to = torch.broadcast_to
+nonzero = torch.nonzero
 
 
 def atleast_1d(array):

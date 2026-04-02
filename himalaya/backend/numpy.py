@@ -101,6 +101,7 @@ hstack = np.hstack
 vstack = np.vstack
 dstack = np.dstack
 broadcast_to = np.broadcast_to
+nonzero = np.nonzero
 
 
 def diagonal_view(array, axis1=0, axis2=1):
