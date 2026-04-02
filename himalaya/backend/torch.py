@@ -160,7 +160,7 @@ def flatnonzero(x):
     return torch.nonzero(torch.flatten(x), as_tuple=True)[0]
 
 
-def asarray(x, dtype=None, device="cpu"):
+def asarray(x, dtype=None, device=None):
     if dtype is None:
         if isinstance(x, torch.Tensor):
             dtype = x.dtype
@@ -169,8 +169,11 @@ def asarray(x, dtype=None, device="cpu"):
     if dtype is not None:
         dtype = _dtype_to_str(dtype)
         dtype = getattr(torch, dtype)
-    if device is None and isinstance(x, torch.Tensor):
-        device = x.device
+    if device is None:
+        if isinstance(x, torch.Tensor) and x.device.type == "cpu":
+            device = x.device
+        else:
+            device = "cpu"
 
     try:
         tensor = torch.as_tensor(x, dtype=dtype, device=device)

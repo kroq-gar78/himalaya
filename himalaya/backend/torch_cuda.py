@@ -28,7 +28,7 @@ def rand(*args, **kwargs):
     return torch.rand(*args, **kwargs).cuda()
 
 
-def asarray(x, dtype=None, device="cuda"):
+def asarray(x, dtype=None, device=None):
     if dtype is None:
         if isinstance(x, torch.Tensor):
             dtype = x.dtype
@@ -38,7 +38,7 @@ def asarray(x, dtype=None, device="cuda"):
         dtype = _dtype_to_str(dtype)
         dtype = getattr(torch, dtype)
     if device is None:
-        if isinstance(x, torch.Tensor):
+        if isinstance(x, torch.Tensor) and x.device.type == "cuda":
             device = x.device
         else:
             device = "cuda"

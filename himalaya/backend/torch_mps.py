@@ -55,7 +55,7 @@ def rand(*args, **kwargs):
     return torch.rand(*args, **kwargs, device="mps")
 
 
-def asarray(x, dtype=None, device="mps"):
+def asarray(x, dtype=None, device=None):
     if dtype is None:
         if isinstance(x, torch.Tensor):
             dtype = x.dtype
@@ -66,7 +66,7 @@ def asarray(x, dtype=None, device="mps"):
         dtype = _check_dtype_torch_mps(dtype)
         dtype = getattr(torch, dtype)
     if device is None:
-        if isinstance(x, torch.Tensor):
+        if isinstance(x, torch.Tensor) and x.device.type == "mps":
             device = x.device
         else:
             device = "mps"
