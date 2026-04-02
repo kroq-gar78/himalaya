@@ -96,6 +96,10 @@ flip = np.flip
 atleast_1d = np.atleast_1d
 finfo = np.finfo
 eye = np.eye
+nan_to_num = np.nan_to_num
+hstack = np.hstack
+vstack = np.vstack
+dstack = np.dstack
 
 
 def diagonal_view(array, axis1=0, axis2=1):

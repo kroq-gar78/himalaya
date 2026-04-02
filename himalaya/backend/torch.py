@@ -103,6 +103,9 @@ sign = torch.sign
 clip = torch.clamp
 finfo = torch.finfo
 eye = torch.eye
+hstack = torch.hstack
+vstack = torch.vstack
+dstack = torch.dstack
 
 
 def atleast_1d(array):
@@ -270,6 +273,36 @@ def full_like(array, fill_value, shape=None, dtype=None, device=None):
         device = array.device
     return torch.full(shape, fill_value, dtype=dtype, device=device,
                       layout=array.layout)
+
+
+def nan_to_num(x, nan=0.0, posinf=None, neginf=None):
+    try:
+        return torch.nan_to_num(x, nan=nan, posinf=posinf, neginf=neginf)
+    except AttributeError:
+        if not torch.is_floating_point(x):
+            return x
+
+        result = x.clone()
+
+        if nan is not None:
+            nan_value = torch.as_tensor(nan, dtype=result.dtype,
+                                        device=result.device)
+            result = torch.where(torch.isnan(result), nan_value, result)
+
+        if posinf is None:
+            posinf = torch.finfo(result.dtype).max
+        if neginf is None:
+            neginf = torch.finfo(result.dtype).min
+
+        posinf_value = torch.as_tensor(posinf, dtype=result.dtype,
+                                           device=result.device)
+        neginf_value = torch.as_tensor(neginf, dtype=result.dtype,
+                                           device=result.device)
+        is_posinf = torch.isinf(result) & (result > 0)
+        is_neginf = torch.isinf(result) & (result < 0)
+        result = torch.where(is_posinf, posinf_value, result)
+        result = torch.where(is_neginf, neginf_value, result)
+        return result
 
 
 def check_arrays(*all_inputs):

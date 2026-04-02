@@ -97,6 +97,10 @@ flip = cupy.flip
 atleast_1d = cupy.atleast_1d
 finfo = cupy.finfo
 eye = cupy.eye
+nan_to_num = cupy.nan_to_num
+hstack = cupy.hstack
+vstack = cupy.vstack
+dstack = cupy.dstack
 
 
 def diagonal_view(array, axis1=0, axis2=1):

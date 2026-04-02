@@ -183,6 +183,26 @@ def test_svd(backend, full_matrices, three_dim):
                 )
 
 
+@pytest.mark.parametrize('backend', ALL_BACKENDS)
+def test_nan_to_num(backend):
+    import numpy as np
+
+    backend = set_backend(backend)
+
+    array = backend.asarray(
+        [np.nan, -np.inf, -1.5, 0.0, np.inf], dtype='float32'
+    )
+
+    result = backend.nan_to_num(array, nan=1.5, posinf=9.0, neginf=-9.0)
+    reference = np.nan_to_num(
+        backend.to_numpy(array), nan=1.5, posinf=9.0, neginf=-9.0
+    )
+    reference = backend.asarray(reference, dtype='float32')
+
+    assert result.__class__ == array.__class__
+    assert_array_almost_equal(result, reference)
+
+
 @pytest.mark.parametrize('backend_out', ALL_BACKENDS)
 @pytest.mark.parametrize('backend_in', ALL_BACKENDS)
 def test_changed_backend_asarray(backend_in, backend_out):
