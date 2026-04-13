@@ -198,7 +198,28 @@ def test_nan_to_num(backend):
         backend.to_numpy(array), nan=1.5, posinf=9.0, neginf=-9.0
     )
 
+    assert result.__class__ == array.__class__
     assert_array_almost_equal(result, reference)
+
+
+@pytest.mark.parametrize('backend', ALL_BACKENDS)
+def test_broadcast_to(backend):
+    import numpy as np
+
+    backend = set_backend(backend)
+    for source_shape, target_shape in [
+        ((3,), (2, 3)),
+        ((1, 3), (4, 2, 3)),
+        ((2, 1, 3), (2, 4, 3)),
+        ((1, 1, 3), (5, 4, 3)),
+    ]:
+        array = backend.randn(*source_shape)
+
+        result = backend.broadcast_to(array, target_shape)
+        reference = np.broadcast_to(backend.to_numpy(array), target_shape)
+
+        assert result.__class__ == array.__class__
+        assert_array_almost_equal(result, reference)
 
 
 @pytest.mark.parametrize(
@@ -223,6 +244,7 @@ def test_stack_helpers(backend, stack_name, shapes):
         [backend.to_numpy(array) for array in arrays]
     )
 
+    assert all(result.__class__ == array.__class__ for array in arrays)
     assert_array_almost_equal(result, reference)
 
 
