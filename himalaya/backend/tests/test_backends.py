@@ -222,6 +222,25 @@ def test_broadcast_to(backend):
         assert_array_almost_equal(result, reference)
 
 
+@pytest.mark.parametrize('backend', ALL_BACKENDS)
+def test_nonzero(backend):
+    import numpy as np
+
+    backend = set_backend(backend)
+    for array in [
+        backend.asarray([0, 1, 0, 2]),
+        backend.asarray([[0, 1, 0], [3, 0, 4]]),
+        backend.asarray([[[0, 1], [2, 0]], [[0, 0], [3, 4]]]),
+    ]:
+        reference_input = backend.to_numpy(array)
+        result = backend.nonzero(array)
+
+        reference = np.nonzero(reference_input)
+        assert len(result) == len(reference)
+        for result_axis, reference_axis in zip(result, reference):
+            assert_array_almost_equal(result_axis, reference_axis)
+
+
 @pytest.mark.parametrize(
     'stack_name, shapes',
     [

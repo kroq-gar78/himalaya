@@ -80,6 +80,7 @@ norm = linalg.norm
 log = np.log
 exp = np.exp
 arange = np.arange
+nonzero = np.nonzero
 flatnonzero = np.flatnonzero
 isin = np.isin
 searchsorted = np.searchsorted
@@ -101,7 +102,6 @@ hstack = np.hstack
 vstack = np.vstack
 dstack = np.dstack
 broadcast_to = np.broadcast_to
-nonzero = np.nonzero
 
 
 def diagonal_view(array, axis1=0, axis2=1):

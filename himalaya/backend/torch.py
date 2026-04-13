@@ -107,7 +107,6 @@ hstack = torch.hstack
 vstack = torch.vstack
 dstack = torch.dstack
 broadcast_to = torch.broadcast_to
-nonzero = torch.nonzero
 
 
 def atleast_1d(array):
@@ -159,6 +158,10 @@ def searchsorted(x, y):
     import numpy as np  # XXX
     np_result = np.searchsorted(x.cpu().numpy(), y.cpu().numpy())
     return asarray(np_result, dtype=torch.int64, device=x.device)
+
+
+def nonzero(x):
+    return torch.nonzero(x, as_tuple=True)
 
 
 def flatnonzero(x):

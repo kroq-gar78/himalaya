@@ -83,6 +83,7 @@ norm = cupy.linalg.norm
 log = cupy.log
 exp = cupy.exp
 arange = cupy.arange
+nonzero = cupy.nonzero
 flatnonzero = cupy.flatnonzero
 unique = cupy.unique
 einsum = cupy.einsum
@@ -102,7 +103,6 @@ hstack = cupy.hstack
 vstack = cupy.vstack
 dstack = cupy.dstack
 broadcast_to = cupy.broadcast_to
-nonzero = cupy.nonzero
 
 
 def diagonal_view(array, axis1=0, axis2=1):
