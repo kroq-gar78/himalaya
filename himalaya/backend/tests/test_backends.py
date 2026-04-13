@@ -197,9 +197,32 @@ def test_nan_to_num(backend):
     reference = np.nan_to_num(
         backend.to_numpy(array), nan=1.5, posinf=9.0, neginf=-9.0
     )
-    reference = backend.asarray(reference, dtype='float32')
 
-    assert result.__class__ == array.__class__
+    assert_array_almost_equal(result, reference)
+
+
+@pytest.mark.parametrize(
+    'stack_name, shapes',
+    [
+        ('hstack', [(2,), (3,), (1,)]),
+        ('hstack', [(2, 3), (2, 1)]),
+        ('vstack', [(3,), (1, 3), (3,)]),
+        ('dstack', [(3,), (1, 3)]),
+        ('dstack', [(2, 3, 1), (2, 3, 2)]),
+    ],
+)
+@pytest.mark.parametrize('backend', ALL_BACKENDS)
+def test_stack_helpers(backend, stack_name, shapes):
+    import numpy as np
+
+    backend = set_backend(backend)
+    arrays = [backend.randn(*shape) for shape in shapes]
+
+    result = getattr(backend, stack_name)(arrays)
+    reference = getattr(np, stack_name)(
+        [backend.to_numpy(array) for array in arrays]
+    )
+
     assert_array_almost_equal(result, reference)
 
 
