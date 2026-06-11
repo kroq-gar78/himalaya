@@ -131,10 +131,10 @@ def solve_sparse_group_lasso_cv(X, Y, groups=None, l21_regs=[0.05],
     # select best hyperparameter configuration
     all_cv_scores /= n_splits
     argmax = backend.argmax(all_cv_scores, 0)
-    config = backend.asarray(
+    config = backend.asarray_like(
         list(
             itertools.product(backend.to_numpy(l21_regs),
-                              backend.to_numpy(l1_regs))))
+                              backend.to_numpy(l1_regs))), ref=Y)
     best_config = config[argmax]
     best_l21_reg = best_config[:, 0]
     best_l1_reg = best_config[:, 1]
