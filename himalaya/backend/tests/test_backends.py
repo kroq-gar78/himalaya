@@ -231,7 +231,7 @@ def test_asarray_dtype(backend_in, backend_out, dtype_in, dtype_out):
     assert _dtype_to_str(array_out.dtype) == dtype_out
 
 
-def test_multigpu_asarray_keeps_on_same_device(backend_name):
+def test_multigpu_asarray_keeps_on_same_device():
     backend = set_backend('torch_cuda')
 
     import torch
