@@ -231,6 +231,33 @@ def test_asarray_dtype(backend_in, backend_out, dtype_in, dtype_out):
     assert _dtype_to_str(array_out.dtype) == dtype_out
 
 
+@pytest.mark.parametrize('backend_name', ['torch_cuda', 'cupy'])
+def test_multigpu_asarray_keeps_on_same_device(backend_name):
+    backend = set_backend(backend_name)
+
+    if backend_name == 'torch_cuda':
+        torch = pytest.importorskip('cupy')
+        if torch.cuda.device_count() < 2:
+            pytest.skip("Multiple CUDA devices required.")
+
+        device = torch.device('cuda:1')
+        array = torch.arange(3, device=device)
+
+        result = backend.asarray(array)
+        assert result.device == device
+
+    elif backend_name == 'cupy':
+        cupy = pytest.importorskip('cupy')
+        if cupy.cuda.runtime.getDeviceCount() < 2:
+            pytest.skip("Multiple CuPy CUDA devices required.")
+
+        with cupy.cuda.Device(1):
+            array = cupy.arange(3)
+
+        result = backend.asarray(array)
+        assert result.device.id == 1
+
+
 def test_dtype_to_str_wrong_input():
     assert _dtype_to_str(None) is None
 
