@@ -215,7 +215,7 @@ def solve_sparse_group_lasso(X, Y, groups=None, l21_reg=0.05, l1_reg=0.05,
 
     if groups is None:
         groups = backend.zeros((n_features))
-    groups = backend.asarray(groups)[:]
+    groups = backend.asarray_like(groups, ref=X)[:]
     groups = [groups == u for u in backend.unique(groups) if u >= 0]
 
     if initial_coef is None:
