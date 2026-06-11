@@ -134,6 +134,26 @@ def test_group_ridge_split_score(backend):
     assert_array_almost_equal(score, score_split.sum(0), decimal=5)
 
 
+def test_ridge_predict_preserves_input_device():
+    backend = set_backend('torch_cuda')
+    import torch
+
+    if torch.cuda.device_count() < 2:
+        pytest.skip("Multiple CUDA devices required.")
+
+    device = torch.device('cuda:1')
+    X = backend.asarray(backend.randn(10, 5), device=device)
+    Y = backend.asarray(backend.randn(10, 2), device=device)
+
+    model = Ridge(alpha=1.0)
+    model.fit(X, Y)
+
+    y_pred = model.predict(X)
+
+    assert model.coef_.device == device
+    assert y_pred.device == device
+
+
 ###############################################################################
 ###############################################################################
 ###############################################################################

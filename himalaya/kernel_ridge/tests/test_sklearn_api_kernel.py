@@ -260,6 +260,28 @@ def test_kernel_ridge_wrong_solver(backend):
         model.fit(X, Y)
 
 
+@pytest.mark.parametrize(
+    'solver', ['eigenvalues', 'conjugate_gradient', 'gradient_descent'])
+def test_kernel_ridge_predict_preserves_input_device(solver):
+    backend = set_backend('torch_cuda')
+    import torch
+
+    if torch.cuda.device_count() < 2:
+        pytest.skip("Multiple CUDA devices required.")
+
+    device = torch.device('cuda:1')
+    X = backend.asarray(backend.randn(10, 5), device=device)
+    Y = backend.asarray(backend.randn(10, 2), device=device)
+
+    model = KernelRidge(alpha=1.0, kernel='linear', solver=solver)
+    model.fit(X, Y)
+
+    y_pred = model.predict(X)
+
+    assert model.dual_coef_.device == device
+    assert y_pred.device == device
+
+
 @pytest.mark.parametrize('solver', ['eigenvalues', 'svd'])
 @pytest.mark.parametrize('backend', ALL_BACKENDS)
 def test_kernel_ridge_cv_precomputed(backend, solver):

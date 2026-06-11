@@ -8,6 +8,26 @@ from himalaya.utils import to_numpy_float64
 
 from himalaya.lasso import SparseGroupLassoCV
 
+
+def test_sparse_group_lasso_cv_predict_preserves_input_device():
+    backend = set_backend('torch_cuda')
+    import torch
+
+    if torch.cuda.device_count() < 2:
+        pytest.skip("Multiple CUDA devices required.")
+
+    device = torch.device('cuda:1')
+    X = backend.asarray(backend.randn(10, 5), device=device)
+    Y = backend.asarray(backend.randn(10, 2), device=device)
+
+    model = SparseGroupLassoCV(groups=None, l1_regs=[0.1], l21_regs=[0.1], cv=2)
+    model.fit(X, Y)
+
+    y_pred = model.predict(X)
+
+    assert y_pred.device == device
+
+
 ###############################################################################
 # scikit-learn.utils.estimator_checks
 
