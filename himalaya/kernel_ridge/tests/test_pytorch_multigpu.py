@@ -88,16 +88,13 @@ def test_get_kernel_preserves_input_device(Estimator):
 
     Xs, Ks, Y = _create_dataset(backend)
 
-    #if torch.cuda.device_count() < 2:
-    #    pytest.skip("Multiple CUDA devices required.")
+    if torch.cuda.device_count() < 2:
+        pytest.skip("Multiple CUDA devices required.")
 
     backend = set_backend('torch_cuda')
     device = torch.device('cuda:1')
-    #device = torch.device('cuda:0')
 
     with SingleGPUEnforcer(device.index):
-        #X = backend.asarray(backend.randn(10, 5), device=device)
-        #Y = backend.asarray(backend.randn(10, 2), device=device)
         Xs = [backend.asarray(X, device=device) for X in Xs]
         Y = backend.asarray(Y, device=device)
 
