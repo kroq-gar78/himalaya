@@ -319,7 +319,7 @@ def solve_multiple_kernel_ridge_random_search(
                             alphas_indices[mask2])
                         # update corresponding weights
                         mask_target = backend.arange(weights.shape[2])
-                        mask_target = backend.to_gpu(mask_target)[mask2]
+                        mask_target = backend.asarray(mask_target, device=device)[mask2]
                         tmp = weights[alphas_indices, :, mask_target]
                         dual_weights[:, batch][:, backend.to_cpu(mask2)] = \
                             backend.to_cpu(tmp).T

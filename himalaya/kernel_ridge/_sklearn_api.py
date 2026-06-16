@@ -493,7 +493,7 @@ class KernelRidgeCV(KernelRidge):
             if sample_weight.shape[0] != y.shape[0]:
                 raise ValueError("Inconsistent number of samples.")
 
-        alphas = check_array(self.alphas, dtype=self.dtype_, ndim=1)
+        alphas = check_array(self.alphas, dtype=self.dtype_, ndim=1, device=X.device)
 
         n_samples, n_features = X.shape
         if n_samples > n_features and self.kernel == "linear" and self.warn:

@@ -308,7 +308,7 @@ class RidgeCV(Ridge):
         if X.shape[0] != y.shape[0]:
             raise ValueError("Inconsistent number of samples.")
 
-        alphas = check_array(self.alphas, dtype=self.dtype_, ndim=1)
+        alphas = check_array(self.alphas, dtype=self.dtype_, ndim=1, device=X.device)
 
         ravel = False
         if y.ndim == 1:
